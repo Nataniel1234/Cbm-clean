@@ -1,0 +1,72 @@
+// CBM Clean — esquema da base de dados
+// Docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/// Catalogo de servicos apresentado no site e devolvido pela API.
+model Service {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  tagline     String
+  description String
+  features    String[]
+  icon        String
+  position    Int      @default(0)
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  quotes QuoteRequest[]
+
+  @@index([active, position])
+}
+
+enum QuoteStatus {
+  NOVO
+  CONTACTADO
+  ORCAMENTO_ENVIADO
+  GANHO
+  PERDIDO
+}
+
+enum Frequency {
+  PONTUAL
+  SEMANAL
+  QUINZENAL
+  MENSAL
+  DIARIA
+}
+
+/// Pedido de orcamento submetido no formulario do site.
+model QuoteRequest {
+  id        String      @id @default(cuid())
+  name      String
+  email     String
+  phone     String
+  city      String
+  address   String?
+  area      Int?
+  frequency Frequency   @default(PONTUAL)
+  message   String
+  status    QuoteStatus @default(NOVO)
+  consent   Boolean     @default(false)
+  ip        String?
+  userAgent String?
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  serviceId   String?
+  service     Service? @relation(fields: [serviceId], references: [id], onDelete: SetNull)
+  serviceSlug String
+
+  @@index([status, createdAt])
+  @@index([serviceSlug])
+}

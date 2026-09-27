@@ -1,0 +1,141 @@
+@import 'tailwindcss';
+
+/* ── Tokens da identidade CBM Clean ───────────────────────────
+   Verde escuro = confiança. Verde claro = natureza.
+   Laranja/amarelo = ação (apenas botões e destaques).
+   ─────────────────────────────────────────────────────────── */
+@theme {
+  --color-floresta-950: #05231a;
+  --color-floresta-900: #072a20;
+  --color-floresta-800: #0b3b2c;
+  --color-floresta-700: #14533d;
+  --color-floresta-600: #1d6b4f;
+
+  --color-folha-500: #5fb44a;
+  --color-folha-400: #7cc95f;
+  --color-folha-100: #dff2d8;
+
+  --color-agua-200: #cfe8ea;
+  --color-menta-50: #eef7f0;
+
+  --color-laranja-500: #f5871f;
+  --color-laranja-600: #dd7310;
+  --color-ambar-400: #ffc53d;
+
+  --color-carvao-900: #17211d;
+  --color-carvao-600: #47544e;
+  --color-carvao-400: #78857f;
+
+  --font-sans: 'Manrope', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --text-display: 3.5rem;
+  --text-display--line-height: 1.04;
+  --text-display--letter-spacing: -0.03em;
+
+  --radius-xl2: 1.75rem;
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+    scroll-behavior: smooth;
+    scroll-padding-top: 6rem;
+  }
+
+  body {
+    @apply bg-white font-sans text-carvao-600 antialiased;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-extrabold tracking-tight text-floresta-900;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-laranja-500;
+  }
+
+  ::selection {
+    @apply bg-folha-100 text-floresta-900;
+  }
+}
+
+@layer components {
+  .container-cbm {
+    @apply mx-auto w-full max-w-6xl px-5 sm:px-8;
+  }
+
+  .btn,
+  .btn-acao,
+  .btn-escuro,
+  .btn-contorno,
+  .btn-claro {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-[0.95rem]
+           font-bold transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60;
+  }
+
+  .btn-acao {
+    @apply bg-laranja-500 text-white shadow-[0_8px_24px_-10px_var(--color-laranja-600)]
+           hover:bg-laranja-600;
+  }
+
+  .btn-escuro {
+    @apply bg-floresta-800 text-white hover:bg-floresta-700;
+  }
+
+  .btn-contorno {
+    @apply border-2 border-white/30 text-white hover:border-white/70;
+  }
+
+  .btn-claro {
+    @apply border-2 border-floresta-800/15 text-floresta-800 hover:border-floresta-800/40;
+  }
+
+  .campo {
+    @apply w-full rounded-2xl border border-carvao-400/30 bg-white px-4 py-3 text-carvao-900
+           placeholder:text-carvao-400 focus:border-floresta-600 focus:ring-2 focus:ring-folha-100;
+  }
+
+  .campo-erro {
+    @apply border-laranja-600 focus:border-laranja-600 focus:ring-laranja-500/20;
+  }
+
+  .etiqueta {
+    @apply mb-1.5 block text-sm font-bold text-floresta-900;
+  }
+}
+
+/* Uma única animação, no botão de WhatsApp, para chamar a atenção. */
+@keyframes pulso-suave {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgb(95 180 74 / 0.5);
+  }
+  70% {
+    box-shadow: 0 0 0 14px rgb(95 180 74 / 0);
+  }
+}
+
+.pulso {
+  animation: pulso-suave 2.8s ease-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
